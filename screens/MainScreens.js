@@ -10,6 +10,8 @@ import DiscoverScreen from "./DiscoverScreen";
 import AppDrawer from "./AppDrawer";
 import SettingsScreen from "./SettingsScreen";
 import AddScreen from "./AddScreen";
+import CustomTabBar from "@/components/CustomTabBar";
+import UnconventionalCustomTabBar from "@/components/UnconventionalCustomTabBar";
 
 const MainStacks = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,9 +24,14 @@ const MainTabs = ({ navigation }) => {
     <AppDrawer navigation={navigation}>
       <SafeAreaView style={{ height: "100%" }}>
         <Tab.Navigator
+          tabBar={(props) => <UnconventionalCustomTabBar {...props} />}
           screenOptions={{
             headerShown: false,
-            tabBarActiveTintColor: "#408086",
+            tabBarStyle: {
+              backgroundColor: "#dadada",
+            },
+            tabBarActiveTintColor: "#fff",
+            tabBarInactiveTintColor: "#a0a0a0",
           }}
         >
           <Tab.Screen
