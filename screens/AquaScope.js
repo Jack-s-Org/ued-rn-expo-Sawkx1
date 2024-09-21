@@ -1,10 +1,10 @@
-import { StyleSheet, Text } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const DiscoverScreen = () => {
+const AquaScopeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Discover</Text>
+      <Text>AquaScope</Text>
     </SafeAreaView>
   );
 };
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#E3E6EC",
   },
 });
 
-export default DiscoverScreen;
+export default AquaScopeScreen;

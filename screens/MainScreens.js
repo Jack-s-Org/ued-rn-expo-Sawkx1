@@ -1,124 +1,145 @@
-import { useState } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import HomeScreen from "./HomeScreen";
-import NotificationsScreen from "./NotificationsScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MeScreen from "./MeScreen";
-import DiscoverScreen from "./DiscoverScreen";
-import AppDrawer from "./AppDrawer";
+import HomeScreen from "./HomeScreen";
+import ProfileScreen from "./Profile";
+import MarketScreen from "./Market";
 import SettingsScreen from "./SettingsScreen";
-import AddScreen from "./AddScreen";
+import AquaScopeScreen from "./AquaScope";
+import CartScreen from "./Cart";
+import LakeFishingScreen from "./LakeFishing";
+import CastingScreen from "./Casting";
+import ProductScreen from "./Product";
+
+import NavBar from "./NavBar";
+import { Image } from "react-native";
+
+// Icons
+import HomeIcon from "../assets/Icon/Home.png";
+import HomeIconFocused from "../assets/Icon/Home_Clicked.png";
+import CartIcon from "../assets/Icon/Cart.png";
+import CartIconFocused from "../assets/Icon/Cart_Clicked.png";
+import MarketIcon from "../assets/Icon/Market.png";
+import MarketIconFocused from "../assets/Icon/Market_Clicked.png";
+import AquaScopeIcon from "../assets/Icon/AquaScope.png";
+import AquaScopeIconFocused from "../assets/Icon/AquaScope_Clicked.png";
+import ProfileIcon from "../assets/Icon/Profile.png";
+import ProfileIconFocused from "../assets/Icon/Profile_Clicked.png";
 
 const MainStacks = createNativeStackNavigator();
+const MarketStacks = createNativeStackNavigator();
+
 const Tab = createBottomTabNavigator();
 
-const Empty = () => null;
+const MarketTab = () => (
+  <MarketStacks.Navigator>
+    <MarketStacks.Screen
+      name="MarketScreen"
+      component={MarketScreen}
+      options={{ headerShown: false }}
+    />
+    <MarketStacks.Screen
+      name="LakeFishingScreen"
+      component={LakeFishingScreen}
+      options={{ headerShown: false }}
+    />
+    <MarketStacks.Screen
+      name="CastingScreen"
+      component={CastingScreen}
+      options={{ headerShown: false }}
+    />
+    <MarketStacks.Screen
+      name="ProductScreen"
+      component={ProductScreen}
+      options={{ headerShown: false, tabBarStyle: { display: "none" } }}
+    />
+  </MarketStacks.Navigator>
+);
 
-const MainTabs = ({ navigation }) => {
-  const [unreadCount, setUnreadCount] = useState(3);
-  return (
-    <AppDrawer navigation={navigation}>
-      <SafeAreaView style={{ height: "100%" }}>
-        <Tab.Navigator
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: "#408086",
-          }}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home" size={size} color={color} />
-              ),
-              tabBarLabel: "Home",
-            }}
-          />
-
-          <Tab.Screen
-            name="Discover"
-            component={DiscoverScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="search" size={size} color={color} />
-              ),
-              tabBarLabel: "Discover",
-            }}
-          />
-
-          <Tab.Screen
-            name="AddTab"
-            component={Empty} // this is a workaround to show a full screen when this tab is pressed
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons name="add" size={36} color={color} />
-              ),
-              tabBarLabel: () => null,
-            }}
-            listeners={{
-              tabPress: (e) => {
-                e.preventDefault(); // stop default navigation
-                navigation.navigate("Add"); // manually navigate to the stack screen outside of the tab navigators
-              },
-            }}
-          />
-
-          <Tab.Screen
-            name="Inbox"
-            component={NotificationsScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="chatbox" size={size} color={color} />
-              ),
-              tabBarLabel: "Inbox",
-              tabBarBadge: unreadCount,
-            }}
-            listeners={{
-              tabPress: () => {
-                setUnreadCount(null);
-              },
-            }}
-          />
-
-          <Tab.Screen
-            name="SettingsDrawer"
-            component={MeScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="person" size={size} color={color} />
-              ),
-              tabBarLabel: "Me",
-            }}
-          />
-        </Tab.Navigator>
-      </SafeAreaView>
-    </AppDrawer>
-  );
-};
-
-const MainScreens = () => {
-  return (
-    <MainStacks.Navigator>
-      <MainStacks.Screen
-        name="MainTabs"
-        component={MainTabs}
-        options={{ headerShown: false }}
+const MainTabs = () => (
+  <SafeAreaView style={{ flex: 1, backgroundColor: "#E3E6EC" }}>
+    <Tab.Navigator
+      tabBar={(props) => <NavBar {...props} />}
+      screenOptions={{ headerShown: false }}
+    >
+      <Tab.Screen
+        name="Market"
+        component={MarketTab}
+        options={{
+          tabBarIcon: ({ isFocused }) => (
+            <Image
+              source={isFocused ? MarketIconFocused : MarketIcon}
+              style={{ width: 70, height: 68 }}
+            />
+          ),
+        }}
       />
-      <MainStacks.Screen
-        name="Add"
-        component={AddScreen}
-        options={{ animation: "fade_from_bottom" }}
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ isFocused }) => (
+            <Image
+              source={isFocused ? HomeIconFocused : HomeIcon}
+              style={{ width: 70, height: 68 }}
+            />
+          ),
+        }}
       />
-      <MainStacks.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ animation: "fade_from_bottom" }}
+      <Tab.Screen
+        name="AquaScope"
+        component={AquaScopeScreen}
+        options={{
+          tabBarIcon: ({ isFocused }) => (
+            <Image
+              source={isFocused ? AquaScopeIconFocused : AquaScopeIcon}
+              style={{ width: 70, height: 68 }}
+            />
+          ),
+        }}
       />
-    </MainStacks.Navigator>
-  );
-};
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarIcon: ({ isFocused }) => (
+            <Image
+              source={isFocused ? CartIconFocused : CartIcon}
+              style={{ width: 70, height: 68 }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ isFocused }) => (
+            <Image
+              source={isFocused ? ProfileIconFocused : ProfileIcon}
+              style={{ width: 70, height: 68 }}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  </SafeAreaView>
+);
+
+const MainScreens = () => (
+  <MainStacks.Navigator>
+    <MainStacks.Screen
+      name="MainTabs"
+      component={MainTabs}
+      options={{ headerShown: false }}
+    />
+    <MainStacks.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{ animation: "fade_from_bottom" }}
+    />
+  </MainStacks.Navigator>
+);
 
 export default MainScreens;
